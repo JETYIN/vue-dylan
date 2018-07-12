@@ -9,7 +9,7 @@ if (process.env.NODE_ENV) {
     baseImgUrl = '';
 
 } else {
-    baseUrl = 'localhost://8080';
+    baseUrl = 'localhost://8080';//spring 默认的dev请求地址
     baseImgUrl = '';
 }
 
