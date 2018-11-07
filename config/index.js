@@ -3,24 +3,35 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 
 const path = require('path')
-
+var gate='http://localhost:9000'//spring cloud的网关端口，测试用--用作公共参数
 module.exports = {
   dev: {
 
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: {
+      //changeOrigin: true//设置此参数可避免跨域
+    },
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
-    port: 8081, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
+    port: 9100, // 当前vue项目运口
     autoOpenBrowser: false,
     errorOverlay: true,
     notifyOnErrors: true,
     poll: false, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-
+    proxyTable:{ //当开启前端访问localhost:9100/auth将会进入网关，否则将进直接走前端--从端口9100--到9000
+     '/auth':{
+       target:gate,//目前接口域名：后端网关
+       changeOrigin: true,//是否跨域
+       pathRewrite: {
+        '^/auth': '/auth'//匹配到url中包含url，既进行转发到其他port
+      }
+     }
+     
+    },
 
-    
     /**
      * Source Maps
      */

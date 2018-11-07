@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import vuex from 'vuex';
 
-Vue.use(vuex);
+Vue.use(vuex);//vuex中一般用于处理登录态登录信息
 
 export default new vuex.Store({//多个组件状态较多，可使用module将不同组件属性下分
 

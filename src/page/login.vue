@@ -27,15 +27,12 @@
 </template>
 
 <script>
-import axios from "axios";
-axios.defaults.baseURL = "http://localhost:8080"; //修改vue默认的
-
 export default {
   data() {
     return {
       loginForm: {
-        username: "",
-        password: ""
+        username: "admin", //设置默认的用户名密码
+        password: "123456"
       },
       logn_rules: {
         username: [
@@ -43,7 +40,8 @@ export default {
         ],
         password: [{ required: true, message: "密码不能为空", trigger: "blur" }]
       },
-      showLogin: false //控制是否显示登陆页面
+      showLogin: false ,//控制是否显示登陆页面
+      fullscreenLoading:false
     };
   },
   mounted() {
@@ -55,24 +53,21 @@ export default {
     //登陆按钮触发
     submitForm() {
       //点击登录触发按钮，此处未插入el-form中的loginForm用户登录数据
-      console.log("login onclick");
-      var that = this;
-      console.log("username:" + this.loginForm.username);
-      console.log("password:" + this.loginForm.password),
-        axios
-          .post("student/login", {
-            username: that.loginForm.username,
-            password: that.loginForm.password
-          })
-          .then(function(response) {
-            console.log("spring boot return:" + JSON.stringify(response));
-            that.$router.push("Home");
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
-          //axios.interceptors.response.use()拦截器
-          this.$router.push('Home');
+      //auth-moudle
+      var _this = this;
+      this.postRequest('/auth/login/form', {//后端接口
+          username: this.loginForm.username,
+          password: this.loginForm.password
+        }).then(resp=> {
+          if (resp && resp.status == 200) {
+            var data = resp.data;
+          
+            _this.$store.commit('login', data.obj);
+            var path = _this.$route.query.redirect;
+            _this.$router
+              .replace({path: path == '/' || path == undefined ? '/home' : path});
+          }
+        });
     }
   }
 };

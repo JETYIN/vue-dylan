@@ -5,12 +5,12 @@ let baseUrl = '';
 let routerMode = 'hash';
 let baseImgUrl = '';
 if (process.env.NODE_ENV) {
-    baseUrl = '';
+    baseUrl = 'http://localhost:9000';//配置spring cloud地址--必须加入http前缀
     baseImgUrl = '';
 
 } else {
-    baseUrl = 'localhost://8080';//spring 默认的dev请求地址
-    baseImgUrl = '';
+    baseUrl = 'http://localhost:9000';//配置spring cloud地址--必须加入http前缀
+    baseImgUrl = '';//可同步部署图片地址
 }
 
 
